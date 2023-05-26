@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/pi/exomy_code/ws/install/setup.sh
