@@ -297,3 +297,93 @@ class Rover():
                     motor_speeds[self.RR] = -max_driving
 
         return motor_speeds
+
+    def autoSteeringAngle(self, annotations):
+        steering_angles = [0]*6
+        if (annotations.person_detected):
+            person_center_x = annotations.person_x + annotations.person_w/2
+
+            distance_to_center = 320 - person_center_x
+
+            # if person is not in center, rotate to have it in center, else forward
+            if abs(distance_to_center) < 50:
+                #Rotation 
+                if distance_to_center > 0:
+                   # Drive right forwards
+                    print('AUTO: Person right')
+                    steering_angles[self.FL] = 45
+                    steering_angles[self.FR] = 45
+                    steering_angles[self.CR] = 0
+                    steering_angles[self.CL] = 0
+                    steering_angles[self.RL] = -45
+                    steering_angles[self.RR] = -45
+                else:
+                    # Drive left forwards
+                    print('AUTO: Person left')
+                    steering_angles[self.FL] = -45
+                    steering_angles[self.FR] = -45
+                    steering_angles[self.CR] = 0
+                    steering_angles[self.CL] = 0
+                    steering_angles[self.RL] = 45
+                    steering_angles[self.RR] = 45
+            else:
+                print('AUTO: Person forward')
+                steering_angles[self.FL] = 0
+                steering_angles[self.FR] = 0
+                steering_angles[self.CR] = 0
+                steering_angles[self.CL] = 0
+                steering_angles[self.RL] = 0
+                steering_angles[self.RR] = 0
+                #forward
+        elif (annotations.cat_detected):
+            # if cat detected, we stop
+            print('AUTO: Cat detected')
+            steering_angles[self.FL] = 0
+            steering_angles[self.FR] = 0
+            steering_angles[self.CR] = 0
+            steering_angles[self.CL] = 0
+            steering_angles[self.RL] = 0
+            steering_angles[self.RR] = 0
+        return None
+
+    def autoVelocity(self, annotations):
+
+        motor_speeds = [0]*6
+        if (annotations.person_detected):
+            person_center_x = annotations.person_x + annotations.person_w/2
+
+            distance_to_center = 320 - person_center_x
+
+            # if person is not in center, rotate to have it in center, else forward
+            if abs(distance_to_center) < 50:
+                # Right turn
+                if distance_to_center > 0:
+                    motor_speeds[self.FL] = max_driving
+                    motor_speeds[self.FR] = -max_driving
+                    motor_speeds[self.CL] = max_driving
+                    motor_speeds[self.CR] = -max_driving
+                    motor_speeds[self.RL] = max_driving
+                    motor_speeds[self.RR] = -max_driving
+                else:
+                    motor_speeds[self.FL] = -max_driving
+                    motor_speeds[self.FR] = max_driving
+                    motor_speeds[self.CL] = -max_driving
+                    motor_speeds[self.CR] = max_driving
+                    motor_speeds[self.RL] = -max_driving
+                    motor_speeds[self.RR] = max_driving
+            else: 
+                motor_speeds[self.FL] = max_driving
+                motor_speeds[self.FR] = max_driving
+                motor_speeds[self.CL] = max_driving
+                motor_speeds[self.CR] = max_driving
+                motor_speeds[self.RL] = max_driving
+                motor_speeds[self.RR] = max_driving
+
+        elif annotations.cat_detected:
+            motor_speeds[self.FL] = 0
+            motor_speeds[self.FR] = 0
+            motor_speeds[self.CL] = 0
+            motor_speeds[self.CR] = 0
+            motor_speeds[self.RL] = 0
+            motor_speeds[self.RR] = 0
+        return None

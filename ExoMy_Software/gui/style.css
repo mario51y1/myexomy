@@ -52,6 +52,14 @@ body {
 
 }
 
+.buttonAuto{
+    background-color: orange;
+    grid-row: 5;
+    width: 50%;
+    font-size: 12px;
+
+}
+
 .button_container {
     position: absolute;
     display: grid;

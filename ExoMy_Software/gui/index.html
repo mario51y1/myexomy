@@ -8,6 +8,7 @@
   <script src="./node_modules/nipplejs/dist/nipplejs.js"></script>
   <script type="text/javascript" type="text/javascript">
     var publishImmidiately = true;
+    var auto = false;
     var host_url = window.location.hostname;
     console.log(host_url);
     var watchdog_handle;
@@ -103,6 +104,26 @@
       console.log(buttons)
     }
 
+    auto_topic = new ROSLIB.Topic({
+      ros: ros,
+      name: "/set_auto",
+      messageType: 'std_msgs/Int8'
+    });
+
+    changeAuto = function () {
+      auto = !auto;
+      value = 0;
+      if (auto) {
+        value = 1;
+      }
+      console.log(auto);
+      document.getElementById('auto_status').textContent="Auto status is "+ auto;
+      message = new ROSLIB.Message({
+        data: value
+      });
+      auto_topic.publish(message);
+    }
+
      button_clicked = function (button_index) {
       // The desired button index can be found by listening to the /joy ros message
       // or by checking in the wiki for the gamepad mapping.
@@ -132,11 +153,13 @@
         </div>
       </div>
       <div class="right" id="right">
+        <span id="auto_status">Auto status is false</span>
         <div class="button_container">
           <button class="button buttonY" onclick="button_clicked(3)">CRABBING</button>
           <button class="button buttonX" onclick="button_clicked(0)">SPOT TURN</button>
           <button class="button buttonA" onclick="button_clicked(1)">ACKERMANN</button>
           <button class="button buttonStart" onclick="button_clicked(9)">MOTORS</button>
+          <button class="button buttonAuto" onClick="changeAuto()">AUTO</button>
         </div>
       </div>
     </div>
