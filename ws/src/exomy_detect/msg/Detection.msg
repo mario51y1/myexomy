@@ -1,0 +1,10 @@
+bool cat_detected
+int32 cat_x
+int32 cat_y
+int32 cat_w
+int32 cat_h
+bool person_detected
+int32 person_x
+int32 person_y
+int32 person_w
+int32 person_h
